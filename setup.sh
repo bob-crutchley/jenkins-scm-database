@@ -12,17 +12,12 @@ create_container() {
     sudo docker run -d \
         --name mysql \
         -p 3306:3306 \
+        --health-command='mysqladmin ping --silent' \
         -e MYSQL_DATABASE="${MYSQL_DATABASE}" \
         -e MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD}" \
         -e MYSQL_USER="${MSQL_USER}" \
         -e MYSQL_PASSWORD="${MYSQL_PASSWORD}" \
         mysql:5.7
-}
-
-wait_for_db_ready() {
-    while ! sudo docker exec -i mysql mysqladmin ping -u${MYSQL_USER} -p${MYSQL_PASSWORD} --silent; do
-        echo "waiting for db..."
-    done
 }
 
 grant_user_read_access() {
@@ -38,7 +33,6 @@ run_sql_scripts() {
 # if the container doesn't exist
 if [ -z "$(sudo docker ps -qa -f name=mysql)" ]; then
     create_container
-    wait_for_db_ready
     grant_user_read_access
 # if the container is stopped
 elif [ -n "$(sudo docker ps -q -f status=exited -f name=mysql)" ]; then
