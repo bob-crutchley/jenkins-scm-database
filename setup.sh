@@ -21,7 +21,7 @@ create_container() {
 
 grant_user_read_access() {
     command="grant select on ${MYSQL_DATABASE}.* to '${MYSQL_USER}'@'%' identified by '${MYSQL_PASSWORD}'";
-    sudo docker exec -i mysql mysql -uroot -p${MYSQL_ROOT_PASSWORD} -e  "${command}"
+    sudo docker exec -i mysql mysql --connect-timeout=90 -uroot -p${MYSQL_ROOT_PASSWORD} -e  "${command}"
 }
 
 run_sql_scripts() {
