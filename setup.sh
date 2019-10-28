@@ -42,4 +42,5 @@ if [ -z "$(sudo docker ps -qa -f name=mysql)" ]; then
 # if the container is stopped
 elif [ -n "$(sudo docker ps -q -f status=exited -f name=mysql)" ]; then
     sudo docker start mysql
+fi
 run_sql_scripts
