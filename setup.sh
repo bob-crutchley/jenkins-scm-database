@@ -20,7 +20,7 @@ create_container() {
 }
 
 wait_for_db_ready() {
-    while ! sudo docker exec -i mysqladmin ping -u${MYSQL_USER} -p${MYSQL_PASSWORD} --silent; do
+    while ! sudo docker exec -i mysql mysqladmin ping -u${MYSQL_USER} -p${MYSQL_PASSWORD} --silent; do
         echo "waiting for db..."
     done
 }
